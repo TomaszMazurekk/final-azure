@@ -1,0 +1,24 @@
+<html>
+    <body>
+        <h1>Edit post</h1>
+        <form name="editPost">
+            Title: <input type="text" id="title" name="title" value="<%= post.title %>" />
+            Description: <input type="text" id="description" name="description" value="<%= post.description %>" />
+            <button id="updateButton" type="submit">Update</button>
+        </form>
+    </body>
+
+    <script>
+        const updateButton = document.querySelector("#updateButton");
+        updateButton.addEventListener('click', (event) => {
+            event.preventDefault()
+            
+            const body = JSON.stringify({
+                title: document.forms.editPost.elements.title.value,
+                description: document.forms.editPost.elements.description.value
+            })
+            console.log(body)
+            fetch(window.location.href, {method: "PUT", body, headers: { 'Content-Type': 'application/json' } }).then(() => window.location.href = "/")
+        })
+    </script>
+</html>

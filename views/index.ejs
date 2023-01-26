@@ -1,0 +1,38 @@
+<html>
+    <body>
+        <h1>Posts</h1>
+        <ul>
+            <% posts.forEach(function(post) { %>
+              <li>
+                <h3><%= post.title %>  - <a href="/update/<%= post._id %>">Edit</a> - <button id="<%= post._id %>" class="deleteButton">Delete</button></h3>
+                <p><%= post.description %></p>
+              </li>
+            <% }); %>
+        </ul>
+        <h2>Add a new post</h2>
+        <form name="newPost">
+            Title: <input type="text" id="title" name="title" />
+            Description: <input type="text" id="description" name="description" />
+            <button id="addButton" type="submit">Submit</button>
+        </form>
+        
+    </body>
+
+    <script>
+        const deleteButtons = document.querySelectorAll(".deleteButton")
+        deleteButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                fetch(window.location.href + "delete/" + button.id, {method: "delete"}).then(() => location.reload())
+            })
+        })
+        const addButton = document.querySelector("#addButton");
+        addButton.addEventListener('click', (event) => {
+            event.preventDefault()
+            const body = JSON.stringify({
+                title: document.forms.newPost.elements.title.value,
+                description: document.forms.newPost.elements.description.value
+            })
+            fetch(window.location.href + "add", {method: "POST", body, headers: { 'Content-Type': 'application/json' } }).then(() => location.reload())
+        })
+    </script>
+</html>
